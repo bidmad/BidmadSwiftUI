@@ -27,12 +27,15 @@ class InterstitialAd: NSObject, BIDMADOpenBiddingInterstitialDelegate, Observabl
     }
     
     /**
-    Displays an advertisement and calls the provided closure when the ad is closed.
-    - Parameter adClosureHandler: A closure that will be called when the ad is closed.
+    광고를 표시하고 광고가 닫히면 제공된 Handler를 호출합니다.
+    - Parameter adClosureHandler: 광고가 닫힐 때 호출되는 클로저입니다.
     */
     func show(_ adClosureHandler: (() -> Void)? = nil) {
         ad.show(on: UIApplication.shared.getCurrentViewController()!)
         self.adClosureHandler = adClosureHandler
+        
+        // 로드된 광고를 보여줌으로써 로드된 광고가 소진되었습니다. 다음 광고가 로드될 때까지 isLoaded를 false로 설정합니다.
+        isLoaded = false
     }
     
     func onLoadAd(_ bidmadAd: OpenBiddingInterstitial) {

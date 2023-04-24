@@ -27,12 +27,15 @@ class RewardAd: NSObject, BIDMADOpenBiddingRewardVideoDelegate, ObservableObject
     }
     
     /**
-    Displays an advertisement and calls the provided closure when the ad is closed.
-    - Parameter adClosureHandler: A closure that takes a boolean value as a parameter, indicating whether the user has successfully received a reward or not. If the ad is non-rewarded, the boolean value will always be true.
+    광고를 표시하고 광고가 닫히면 제공된 Handler를 호출합니다.
+    - Parameter adClosureHandler: 사용자가 성공적으로 보상을 받았는지 여부를 나타내는 BOOL 값을 매개변수로 사용하는 클로저입니다.
     */
     func show(_ adClosureHandler: ((Bool) -> Void)? = nil) {
         ad.show(on: UIApplication.shared.getCurrentViewController()!)
         self.adClosureHandler = adClosureHandler
+        
+        // 로드된 광고를 보여줌으로써 로드된 광고가 소진되었습니다. 다음 광고가 로드될 때까지 isLoaded를 false로 설정합니다.
+        isLoaded = false
     }
     
     func onLoadAd(_ bidmadAd: OpenBiddingRewardVideo) {

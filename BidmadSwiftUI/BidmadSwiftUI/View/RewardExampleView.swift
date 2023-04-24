@@ -23,7 +23,7 @@ struct RewardExampleView: View {
             .navigationTitle("Reward Example")
             .modifier(RewardAdConfimationAlert(isAlertPresented: $isAlertPresented, isRewarded: $isRewarded))
             .compatibilityNavigationDestination(isPresented: $isRewarded) {
-                Text("User is rewarded!")
+                UserRewardView()
             }
         }
     }
@@ -45,7 +45,7 @@ struct RewardAdConfimationAlert: ViewModifier {
                 
                 VStack(alignment: .leading) {
                     Image(systemName: "gift")
-                    Text("비디오 광고 시청을 완료한 후, 사용자 추가가 가능합니다. 비디오 광고를 시청하시겠습니까?")
+                    Text("비디오 광고 시청을 마치면 보상이 주어집니다. 비디오 광고를 시청하시겠습니까?")
                         .padding(.vertical)
                     HStack {
                         Spacer()
@@ -92,6 +92,16 @@ struct RewardAdConfimationAlert: ViewModifier {
                 )
                 .shadow(radius: 8)
             }
+        }
+    }
+}
+
+struct UserRewardView: View {
+    var body: some View {
+        HStack {
+            Image(systemName: "gift")
+            Text("리워드가 준비되었습니다!")
+            Image(systemName: "gift")
         }
     }
 }
