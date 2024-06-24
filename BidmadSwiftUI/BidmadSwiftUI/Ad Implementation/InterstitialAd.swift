@@ -8,9 +8,11 @@
 import OpenBiddingHelper
 import SwiftUI
 import Combine
+import Observation
 
-class InterstitialAd: NSObject, BIDMADOpenBiddingInterstitialDelegate, ObservableObject {
-    @Published var isLoaded = false
+@Observable
+class InterstitialAd: NSObject, BIDMADOpenBiddingInterstitialDelegate {
+    var isLoaded = false
     
     private let ad: BidmadInterstitialAd
     var cancellable: AnyCancellable?

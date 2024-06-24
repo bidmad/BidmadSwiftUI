@@ -10,7 +10,7 @@ import SwiftUI
 struct BannerExampleView: View {
     var body: some View {
         ZStack {
-            CompatibilityNavigationStack {
+            NavigationStack {
                 VStack {
                     BannerAdView(zoneId: "1c3e3085-333f-45af-8427-2810c26a72fc")
                 }

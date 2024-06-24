@@ -8,9 +8,11 @@
 import OpenBiddingHelper
 import SwiftUI
 import Combine
+import Observation
 
-class RewardAd: NSObject, BIDMADOpenBiddingRewardVideoDelegate, ObservableObject {
-    @Published var isLoaded = false
+@Observable
+class RewardAd: NSObject, BIDMADOpenBiddingRewardVideoDelegate {
+    var isLoaded = false
     
     private let ad: BidmadRewardAd
     var cancellable: AnyCancellable?

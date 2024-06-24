@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct InterstitialExampleView: View {
-    @EnvironmentObject var ad: InterstitialAd
+    @State var ad = InterstitialAd("228b95a9-6f42-46d8-a40d-60f17f751eb1")
     
     var body: some View {
-        CompatibilityNavigationStack {
+        NavigationStack {
             VStack {
                 if ad.isLoaded {
                     Button {

@@ -12,7 +12,7 @@ struct RewardExampleView: View {
     @State private var isRewarded: Bool = false
     
     var body: some View {
-        CompatibilityNavigationStack {
+        NavigationStack {
             VStack {
                 Button {
                     isAlertPresented.toggle()
@@ -22,7 +22,7 @@ struct RewardExampleView: View {
             }
             .navigationTitle("Reward Example")
             .modifier(RewardAdConfimationAlert(isAlertPresented: $isAlertPresented, isRewarded: $isRewarded))
-            .compatibilityNavigationDestination(isPresented: $isRewarded) {
+            .navigationDestination(isPresented: $isRewarded) {
                 UserRewardView()
             }
         }
@@ -30,7 +30,7 @@ struct RewardExampleView: View {
 }
 
 struct RewardAdConfimationAlert: ViewModifier {
-    @EnvironmentObject var ad: RewardAd
+    @State var ad = RewardAd("29e1ef67-98d2-47b3-9fa2-9192327dd75d")
     
     @Binding var isAlertPresented: Bool
     @Binding var isRewarded: Bool
@@ -40,57 +40,61 @@ struct RewardAdConfimationAlert: ViewModifier {
             content
             
             if isAlertPresented {
-                GeometryReader { _ in }
-                    .background(Color.black.opacity(0.4))
+                Color.black.opacity(0.4)
                 
-                VStack(alignment: .leading) {
-                    Image(systemName: "gift")
-                    Text("비디오 광고 시청을 마치면 보상이 주어집니다. 비디오 광고를 시청하시겠습니까?")
-                        .padding(.vertical)
-                    HStack {
-                        Spacer()
-                        Button("광고 안 볼래요.") {
-                            isAlertPresented.toggle()
-                        }
-                        .foregroundColor(.red)
-                        Spacer()
-                        
+                mainContent
+                    .padding()
+                    .frame(width: 300, height: 200)
+                    .background(Color(uiColor: .systemBackground))
+                    .clipShape(
+                        RoundedRectangle(cornerRadius: 20)
+                    )
+                    .shadow(radius: 8)
+            }
+        }
+        .ignoresSafeArea()
+    }
+    
+    var mainContent: some View {
+        VStack(alignment: .leading) {
+            Image(systemName: "gift")
+            Text("비디오 광고 시청을 마치면 보상이 주어집니다. 비디오 광고를 시청하시겠습니까?")
+                .padding(.vertical)
+            HStack {
+                Spacer()
+                Button("광고 안 볼래요.") {
+                    isAlertPresented.toggle()
+                }
+                .foregroundColor(.red)
+                Spacer()
+                
+                if ad.isLoaded {
+                    Button("광고 보여주세요.") {
                         if ad.isLoaded {
-                            Button("광고 보여주세요.") {
-                                if ad.isLoaded {
-                                    ad.show { isRewarded in
-                                        guard isRewarded else { return }
-                                        
-                                        self.isRewarded = true
-                                        isAlertPresented = false
-                                    }
-                                }
-                            }
-                            .padding(.vertical, 4)
-                            .padding(.horizontal, 10)
-                            .foregroundColor(.white)
-                            .background(Color.blue)
-                            .clipShape(
-                                RoundedRectangle(cornerRadius: 6)
-                            )
-                        } else {
-                            HStack {
-                                Text("광고 로딩 중")
-                                    .padding(.trailing, 5)
-                                ProgressView()
+                            ad.show { isRewarded in
+                                guard isRewarded else { return }
+                                
+                                self.isRewarded = true
+                                isAlertPresented = false
                             }
                         }
-                        
-                        Spacer()
+                    }
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 10)
+                    .foregroundColor(.white)
+                    .background(Color.blue)
+                    .clipShape(
+                        RoundedRectangle(cornerRadius: 6)
+                    )
+                } else {
+                    HStack {
+                        Text("광고 로딩 중")
+                            .padding(.trailing, 5)
+                        ProgressView()
                     }
                 }
-                .padding()
-                .frame(width: 300, height: 200)
-                .modifier(CompatibilityColorGradience(colors: [ .systemBackground ]))
-                .clipShape(
-                    RoundedRectangle(cornerRadius: 20)
-                )
-                .shadow(radius: 8)
+                
+                Spacer()
             }
         }
     }
